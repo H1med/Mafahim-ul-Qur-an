@@ -132,8 +132,8 @@ function renderLesson() {
 
 function setMode(m) {
     app.mode = m;
-    if (m === 'vocab') resetFcState();
     if (m === 'exercises') resetStState();
+    if (m === 'vocab' && app.fc.cards.length === 0) resetFcState();
     renderLesson();
 }
 
@@ -349,7 +349,7 @@ function mcCheck() {
     var qs = lesson.exercises.multipleChoice;
     var correct = qs.filter(function(q, i) { return st.mcSel[i] === q.correct; }).length;
     st.mcChecked = true;
-    if (correct === qs.length) st.completed[0] = true;
+    if (correct >= qs.length - 1) st.completed[0] = true;
     renderLesson();
 }
 
@@ -417,7 +417,9 @@ function renderExMatching(lesson) {
 
 function matchSelect(side, idx) {
     var st = app.st;
-    if (st.completed[1]) return;
+    var lesson = LESSONS[app.currentLesson];
+    var totalPairs = lesson.exercises.matching.arabic.length;
+    if (st.mMatched.length >= totalPairs) return;
     if (side === 'a') {
         if (st.mMatched.find(function(x) { return x.a === idx; })) return;
         st.mSelA = idx;
@@ -426,12 +428,11 @@ function matchSelect(side, idx) {
         st.mSelG = idx;
     }
     if (st.mSelA !== null && st.mSelG !== null) {
-        var lesson = LESSONS[app.currentLesson];
         var correctG = lesson.exercises.matching.german[st.mSelA];
         var pickedG = st.mShuffled[st.mSelG];
         if (correctG === pickedG) {
             st.mMatched.push({ a: st.mSelA, g: st.mSelG });
-            if (st.mMatched.length === lesson.exercises.matching.arabic.length) st.completed[1] = true;
+            if (st.mMatched.length >= totalPairs - 1) st.completed[1] = true;
         } else {
             renderLesson();
             var selA = st.mSelA, selG = st.mSelG;
@@ -507,7 +508,7 @@ function phrasesCheck() {
     var qs = LESSONS[app.currentLesson].exercises.translatePhrases;
     var correct = qs.filter(function(q, i) { return st.phrasesSel[i] === q.correct; }).length;
     st.phrasesChecked = true;
-    if (correct === qs.length) st.completed[2] = true;
+    if (correct >= qs.length - 1) st.completed[2] = true;
     renderLesson();
 }
 
@@ -569,7 +570,7 @@ function versesCheck() {
     var qs = LESSONS[app.currentLesson].exercises.translateVerses;
     var correct = qs.filter(function(q, i) { return st.versesSel[i] === q.correct; }).length;
     st.versesChecked = true;
-    if (correct === qs.length) st.completed[3] = true;
+    if (correct >= qs.length - 1) st.completed[3] = true;
     renderLesson();
 }
 
