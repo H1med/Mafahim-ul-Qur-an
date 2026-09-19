@@ -369,16 +369,30 @@ function buildMCQuestions(lesson, count) {
     shuffleArr(vocab);
     var selected = vocab.slice(0, Math.min(count, vocab.length));
     return selected.map(function(v) {
-        var distractors = (v.distractors || []).slice();
-        // ensure 3 distractors
-        while (distractors.length < 3) {
+        // German options (for "nur Arabisch" - asked in Arabic, answer in German)
+        var distractorsDe = (v.distractors || []).slice();
+        while (distractorsDe.length < 3) {
             var rand = vocab[Math.floor(Math.random() * vocab.length)];
-            var g = rand.german;
-            if (g !== v.german && distractors.indexOf(g) === -1) distractors.push(g);
+            if (rand.german !== v.german && distractorsDe.indexOf(rand.german) === -1) distractorsDe.push(rand.german);
         }
-        var opts = [v.german].concat(distractors.slice(0, 3));
-        shuffleArr(opts);
-        return { arabic: v.arabic, german: v.german, options: opts, correct: opts.indexOf(v.german) };
+        var optsDe = [v.german].concat(distractorsDe.slice(0, 3));
+        shuffleArr(optsDe);
+
+        // Arabic options (for "nur Deutsch" - asked in German, answer in Arabic)
+        var distractorsAr = [];
+        var pool = vocab.filter(function(x){ return x.arabic !== v.arabic; });
+        shuffleArr(pool);
+        for (var i = 0; i < pool.length && distractorsAr.length < 3; i++) {
+            distractorsAr.push(pool[i].arabic);
+        }
+        var optsAr = [v.arabic].concat(distractorsAr.slice(0, 3));
+        shuffleArr(optsAr);
+
+        return {
+            arabic: v.arabic, german: v.german,
+            optionsDe: optsDe, correctDe: optsDe.indexOf(v.german),
+            optionsAr: optsAr, correctAr: optsAr.indexOf(v.arabic)
+        };
     });
 }
 
@@ -415,16 +429,22 @@ function renderMC() {
     var askIsArabic = askArabic;
 
     if (!st.checked) {
+        // askArabic = Frage wird auf Arabisch gezeigt (Antwort = Deutsch)
+        // !askArabic = Frage wird auf Deutsch gezeigt (Antwort = Arabisch)
+        var opts = askArabic ? q.optionsDe : q.optionsAr;
+        var correctIdx = askArabic ? q.correctDe : q.correctAr;
         html += '<div class="mc-progress">' + (st.evalIdx + 1) + ' / ' + total + '</div>';
         html += '<div class="mc-question">';
         html += '<div class="mc-question-text">' + (askIsArabic ? '<span class="arabic">' + askText + '</span>' : askText) + '</div>';
         html += '<div class="mc-options">';
         var labels = ['A','B','C','D'];
-        q.options.forEach(function(opt, oi) {
+        opts.forEach(function(opt, oi) {
             var sel = st.sel[st.evalIdx];
             var cls = 'mc-opt';
             if (sel === oi) cls += ' selected';
-            html += '<button class="' + cls + '" onclick="mcSelect(' + oi + ')">' + labels[oi] + ') ' + (askIsArabic ? opt : '<span class="arabic-inline">' + opt + '</span>') + '</button>';
+            // Option anzeigen: wenn Frage arabisch -> Option deutsch; wenn Frage deutsch -> Option arabisch
+            var optHtml = askIsArabic ? opt : '<span class="arabic-inline">' + opt + '</span>';
+            html += '<button class="' + cls + '" onclick="mcSelect(' + oi + ')">' + labels[oi] + ') ' + optHtml + '</button>';
         });
         html += '</div>';
         html += '</div>';
@@ -433,7 +453,9 @@ function renderMC() {
         // results
         var correct = 0;
         st.questions.forEach(function(qq, i) {
-            if (st.sel[i] === qq.correct) correct++;
+            var askAr = (st.direction === 'ar') || (st.direction === 'both' && i % 2 === 0);
+            var cIdx = askAr ? qq.correctDe : qq.correctAr;
+            if (st.sel[i] === cIdx) correct++;
         });
         html += '<div class="mc-score show">Ergebnis: ' + correct + ' von ' + total + ' richtig</div>';
         html += '<button class="check-btn" style="margin-top:0.5rem" onclick="restartExercise()"><i class="fa-solid fa-rotate-right"></i> Neue Runde</button>';
@@ -457,7 +479,11 @@ function mcNext() {
         // finish
         st.checked = true;
         var correct = 0;
-        st.questions.forEach(function(qq, i) { if (st.sel[i] === qq.correct) correct++; });
+        st.questions.forEach(function(qq, i) {
+            var askAr = (st.direction === 'ar') || (st.direction === 'both' && i % 2 === 0);
+            var cIdx = askAr ? qq.correctDe : qq.correctAr;
+            if (st.sel[i] === cIdx) correct++;
+        });
         markExDone('mc', correct, st.questions.length);
     }
     renderLesson();
@@ -475,6 +501,9 @@ function toggleMCShuffle() {
 
 function setMCDir(dir) {
     exState.direction = dir;
+    exState.sel = {};
+    exState.evalIdx = 0;
+    exState.checked = false;
     renderLesson();
 }
 
@@ -845,7 +874,7 @@ function renderPhr3() {
     html += '<div class="trans-verse-arabic phr3-verse">';
     if (arabicParts.length > 1) {
         html += arabicParts[0];
-        html += '<span class="phr3-blank">' + (st.sel !== null ? st.sel : '______') + '</span>';
+            html += '<span class="phr3-blank">' + (st.sel !== null ? '<span class="arabic-inline">' + st.sel + '</span>' : '') + '</span>';
         html += arabicParts[1];
     } else {
         html += q.arabic;
@@ -951,7 +980,7 @@ function renderExam() {
         html += '<div class="mc-question-text"><span class="arabic">' + q.arabic + '</span></div>';
         html += '<div class="mc-options">';
         var labels = ['A','B','C','D'];
-        q.options.forEach(function(opt, oi) {
+        q.optionsDe.forEach(function(opt, oi) {
             var cls = 'mc-opt';
             if (st.sel === oi) cls += ' selected';
             html += '<button class="' + cls + '" onclick="examSelect(' + oi + ')">' + labels[oi] + ') ' + opt + '</button>';
@@ -987,7 +1016,7 @@ function renderExam() {
         html += '<div class="trans-verse-arabic phr3-verse">';
         if (arabicParts.length > 1) {
             html += arabicParts[0];
-            html += '<span class="phr3-blank">' + (st.sel !== null ? st.sel : '______') + '</span>';
+        html += '<span class="phr3-blank">' + (st.sel !== null ? '<span class="arabic-inline">' + st.sel + '</span>' : '') + '</span>';
             html += arabicParts[1];
         } else {
             html += q.arabic;
@@ -1030,7 +1059,7 @@ function examNext() {
     var part = st.parts[st.pi];
     var correct = false;
     if (part.type === 'mc') {
-        correct = st.sel === part.q.correct;
+        correct = st.sel === part.q.correctDe;
     } else if (part.type === 'phr1') {
         correct = st.sel === part.q.correct;
     } else if (part.type === 'phr2') {
