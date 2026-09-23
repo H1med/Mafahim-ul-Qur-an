@@ -39,34 +39,61 @@ window.lesson2 = {
     exercises: {
         matching: {
             pairs: [
-                { arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0647\u064f\u0648\u064e \u0627\u0644\u0633\u064e\u0651\u0645\u0650\u062a\u0639\u064f', german: 'Wahrlich, Gott, Er ist der Allh\u00f6rende.' },
-                { arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0628\u0650\u0639\u0650\u0628\u064e\u0627\u062f\u0650\u0647\u0650 \u0644\u064e\u062e\u064e\u0628\u0650\u062a\u0631\u064c', german: 'Wahrlich, Gott ist \u00fcber Seine Diener wissend.' },
-                { arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0643\u064e\u0627\u0646\u064e \u063a\u064e\u0641\u064f\u0648\u0631\u064b\u0627', german: 'Wahrlich, Gott ist sehr verzeihend.' },
-                { arabic: '\u0644\u064e\u0647\u064f \u0645\u064e\u0627 \u0641\u0650\u062a \u0627\u0644\u0633\u064e\u0651\u0645\u064e\u0627\u0648\u064e\u0627\u062a\u0650', german: 'Ihm geh\u00f6rt das, was in den Himmeln ist.' },
-                { arabic: '\u0648\u064e\u0647\u064f\u0648\u064e \u0627\u0644\u0652\u0639\u064e\u0644\u0650\u062a\u064f\u0651 \u0627\u0644\u0652\u0639\u064e\u0638\u0650\u062a\u0645\u064f', german: 'Und Er ist der Erhabene, der Gro\u00dfartige.' }
+                { arabic: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَالَمِينَ', german: 'Das Lob gehört Allah, dem Herrn der Welten' },
+                { arabic: 'لَا إِلٰهَ إِلَّا هُوَ ٱلْحَيُّ ٱلْقَيُّومُ', german: 'Es gibt keinen Gott außer Ihm, dem Lebendigen, dem Beständigen.' },
+                { arabic: 'وَهُوَ ٱلْعَلِيُّ ٱلْعَظِيمُ', german: 'Und Er ist der Erhabene, der Großartige' },
+                { arabic: 'وَٱللَّهُ بَصِيرٌ بِٱلْعِبَادِ', german: 'Und Allah ist allsehend bezüglich der Diener' },
+                { arabic: 'إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ', german: 'Gewiss, Allah ist über jede Sache allmächtig' },
+                { arabic: 'وَهُوَ ٱلسَّمِيعُ ٱلْعَلِيمُ', german: 'Und Er ist der Allhörende, der Allwissende' },
+                { arabic: 'وَٱللَّهُ غَفُورٌ رَحِيمٌ', german: 'Und Allah ist sehr verzeihend, barmherzig' },
+                { arabic: 'إِنَّ ٱللَّهَ بِٱلنَّاسِ لَرَءُوفٌ رَحِيمٌ', german: 'Gewiss, Allah ist den Menschen gegenüber wahrlich sehr gnädig, barmherzig.' },
+                { arabic: 'وَكَانَ ٱللَّهُ عَلِيمًا حَكِيمًا', german: 'Und Allah ist allwissend, weise' },
+                { arabic: 'وَهُوَ ٱلْعَزِيزُ ٱلْحَكِيمُ', german: 'Und Er ist der Mächtige, der Weise' }
             ]
         },
         translatePhrases: [
-            {arabic: '\u0627\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f \u0644\u0650\u0644\u064e\u0651\u0647\u0650', options: ['Lob sei Gott dem Allm\u00e4chtigen.', 'Alles Lob geb\u00fchrt Allah.', 'Das Lob geh\u00f6rt dem Herrn.'], correct: 1},
-            {arabic: '\u0644\u064e\u0627 \u0625\u0650\u0644\u064e\u0647\u064e \u0625\u0650\u0644\u064e\u0651\u0627 \u0647\u064f\u0648\u064e', options: ['Es gibt keinen Gott au\u00dfer Ihm.', 'Kein Gott ist au\u00dfer Ihm.', 'Es gibt keinen Herrn au\u00dfer Ihm.'], correct: 0},
-            {arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0639\u064e\u0644\u0650\u062a\u0645\u064c', options: ['Gewiss, Allah ist allh\u00f6rend.', 'Gewiss, Allah ist allwissend.', 'Wahrlich, Allah ist allm\u00e4chtig.'], correct: 1},
-            {arabic: '\u0647\u064f\u0648\u064e \u0627\u0644\u0633\u064e\u0651\u0645\u0650\u062a\u0639\u064f \u0627\u0644\u0652\u0628\u064e\u0635\u0650\u062a\u0631\u064f', options: ['Er ist der Allh\u00f6rende, der Allsehende.', 'Er ist der Allvergebende, der Barmherzige.', 'Er ist der Allwissende, der Allm\u00e4chtigen.'], correct: 0},
-            {arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0628\u0650\u0639\u0650\u0628\u064e\u0627\u062f\u0650\u0647\u0650', options: ['Gewiss, Allah ist zu Seinen Dienern', 'Wahrlich, Allah ist mit Seinen Dienern', 'Gewiss, Allah ist f\u00fcr Seine Diener'], correct: 0},
-            {arabic: '\u0644\u064e\u062e\u064e\u0628\u0650\u062a\u0631\u064c \u0628\u064e\u0635\u0650\u062a\u0631\u064c', options: ['wahrlich allh\u00f6rend, allsehend', 'wahrlich allkundig, allsehend', 'wahrlich allm\u00e4chtig, allwissend'], correct: 1},
-            {arabic: '\u0647\u064f\u0648\u064e \u0627\u0644\u0652\u062d\u064e\u062a\u064f\u0651 \u0627\u0644\u0652\u0642\u064e\u062a\u064f\u0651\u0648\u0645\u064f', options: ['Er ist der Allm\u00e4chtige, der Allweise.', 'Er ist der Erhabene, der Gro\u00dfartige.', 'Er ist der Lebendige, der Best\u00e4ndige.'], correct: 2},
-            {arabic: '\u0643\u064e\u0627\u0646\u064e \u063a\u064e\u0641\u064f\u0648\u0631\u064b\u0627 \u0631\u064e\u062d\u0650\u062a\u0645\u064b\u0627', options: ['ist sehr verzeihend, barmherzig', 'war allm\u00e4chtig, allwissend', 'war sehr verzeihend, barmherzig'], correct: 2},
-            {arabic: '\u0645\u064e\u0627 \u0646\u064a \u0627\u0644\u0633\u064e\u0651\u0645\u064e\u0627\u0648\u064e\u0627\u062a\u0650', options: ['was in den Welten ist', 'was in den Himmeln ist', 'was im Himmel ist'], correct: 1},
-            {arabic: '\u0648\u064e\u0627\u0633\u0652\u062a\u064e\u063a\u0652\u0641\u0650\u0631\u0650 \u0627\u0644\u0644\u064e\u0651\u0647\u064e', options: ['Und bitte Allah um Vergebung.', 'Und f\u00fcrchte Allah.', 'Und preise Allah.'], correct: 0}
+            { arabic: 'وَٱللَّهُ عَلِيمٌ بِٱلظَّالِمِينَ', options: ['Und Gott ist allwissend bezüglich...', 'Allah schuf alle Welten', 'Wahrlich, Allah ist sehr verzeihend'], correct: 0 },
+            { arabic: 'لَا إِلٰهَ إِلَّا ٱللَّهُ', options: ['Allah erschuf die Menschen und Himmel', 'Es gibt keinen Gott außer Allah', 'Im Namen Allahs, des Barmherzigen'], correct: 1 },
+            { arabic: 'وَكَانَ ٱللَّهُ غَفُورًا رَحِيمًا', options: ['Allah ist der Schöpfer des Tages und der Nacht', 'Und auf der Erde sind Zeichen für die Gläubigen', 'Und Allah ist sehr verzeihend, barmherzig'], correct: 2 },
+            { arabic: 'وَهُوَ ٱلْحَيُّ لَا إِلٰهَ إِلَّا هُوَ', options: ['Und Er ist der Lebendige, es gibt keinen Anbetungswürdigen außer Ihm', 'Und Er ist der Allhörende, es gibt keinen Anbetungswürdigen außer Ihm', 'Und Er ist der Allsehende, es gibt keinen Gott außer Ihm'], correct: 0 },
+            { arabic: 'إِنَّ ٱللَّهَ كَانَ عَلِيمًا خَبِيرًا', options: ['Gewiss, Allah ist der Herr aller Weltenbewohner, kundig', 'Gewiss, Allah ist allwissend, kundig', 'Und Allah sieht alle Dinge auf der Erde'], correct: 1 },
+            { arabic: 'وَٱللَّهُ بَصِيرٌ بِمَا تَعْمَلُونَ', options: ['Allah hört und sieht alles, was im Himmel ist', 'Und Allah ist allsehend bezüglich dessen, was...', 'Und Allah ist allsehend und verzeiht allen Gläubigen'], correct: 1 },
+            { arabic: 'وَهُوَ بِكُلِّ شَيْءٍ عَلِيمٌ', options: ['Und Er erschuf jede Sache aus Staub', 'Und Er ist der Erhabene über alle Diener', 'Und Er ist über jede Sache allwissend'], correct: 2 },
+            { arabic: 'لَهُ مٰا فِى السَّمٰوٰتِ وَمٰ فِى الاَرْضِ', options: ['Seins ist, was in den Himmeln und was auf der Erde ist', 'Seins ist, was er erschuf von der Sonne und dem Mond in der Nacht', 'Das Lob gehört dem Herrn der Himmel und der Erde'], correct: 0 },
+            { arabic: 'إِنَّ ٱللَّهَ غَفُورٌ', options: ['Gewiss, Allah ist der Barmherzige, der Erzieher', 'Gewiss, Allah ist sehr verzeihend', 'Gewiss, Allah ist der Allerbarmer'], correct: 1 },
+            { arabic: 'وَهُوَ ٱلْغَفُورُ ٱلرَّحِيمُ', options: ['Und Er ist der Allwissende, der Weise', 'Und Er ist der Barmherzige, der Allerbarmer', 'Und Er ist der Sehr-Verzeihende, der Barmherzige'], correct: 2 },
+            { arabic: 'رَبُّ ٱلسَّمَاوَاتِ وَٱلْأَرْضِ', options: ['Herr der Himmel und der Erde', 'Herr der Sonne und des Mondes', 'Ein Zeichen für ein Volk, das begreift'], correct: 0 },
+            { arabic: 'وَكَانَ ٱللَّهُ عَلِيًّا', options: ['Und Allah erschuf die Menschen als Diener', 'Und Allah ist erhaben', 'Und Allah ist der Allsehende über alle Dinge'], correct: 1 },
+            { arabic: 'إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِلْعَالَمِينَ', options: ['Gewiss, darin sind Allahs Zeichen, in denen er die Erde für die Menschen erschuf', 'Gewiss, darin sind wahrlich Zeichen für die Welten(bewohner)', 'Gewiss, darin sind wahrlich Zeichen, für die Menschen'], correct: 1 },
+            { arabic: 'وَٱللَّهُ سَمِيعٌ عَلِيمٌ', options: ['Und Allah ist allhörend, allwissend', 'Und Allah ist der Schöpfer der Sprachen und Farben', 'Und Allah ist verzeihend, allwissend'], correct: 0 }
         ],
         phraseOrder: [
-            { arabic: '\u0627\u0644\u0652\u062d\u064e\u0645\u0652\u062f\u064f \u0644\u0650\u0644\u064e\u0651\u0647\u0650 \u0631\u064e\u0628\u0650\u0651 \u0627\u0644\u0652\u0639\u064e\u0627\u0644\u064e\u0645\u0650\u064a\u0646\u064e', words: ['Alles Lob', 'geb\u00fchrt', 'Allah,', 'dem Herrn', 'der Welten'] },
-            { arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u0647\u064f\u0648\u064e \u0627\u0644\u0633\u064e\u0651\u0645\u0650\u062a\u0639\u064f \u0627\u0644\u0652\u0628\u064e\u0635\u0650\u062a\u0631\u064f', words: ['Gewiss', 'Allah', 'Er ist', 'der Allh\u00f6rende', 'der Allsehende'] },
-            { arabic: '\u0644\u064e\u0627 \u0625\u0650\u0644\u064e\u0647\u064e \u0625\u0650\u0644\u064e\u0651\u0627 \u0647\u064f\u0648\u064e \u0627\u0644\u0652\u062d\u064e\u062a\u064f\u0651 \u0627\u0644\u0652\u0642\u064e\u062a\u064f\u0651\u0648\u0645\u064f', words: ['Es gibt', 'keinen Gott', 'au\u00dfer Ihm,', 'dem Lebendigen,', 'dem Best\u00e4ndigen'] }
+            { arabic: 'إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ', words: ['Gewiss', 'Allah', 'ist über', 'jede', 'Sache', 'allmächtig'] },
+            { arabic: 'ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَالَمِينَ', words: ['Das Lob', 'gehört Allah', 'dem Herrn', 'der Welten'] },
+            { arabic: 'لَا إِلٰهَ إِلَّا هُوَ', words: ['Es gibt keinen', 'Anbetungswürdigen', 'außer', 'Ihm'] },
+            { arabic: 'وَهُوَ ٱلسَّمِيعُ ٱلْعَلِيمُ', words: ['Und', 'Er', 'ist der', 'Allhörende', 'Allwissende'] },
+            { arabic: 'وَكَانَ ٱللَّهُ غَفُورًا رَحِيمًا', words: ['Und', 'Allah ist', 'sehr verzeihend', 'barmherzig'] },
+            { arabic: 'وَٱللَّهُ بَصِيرٌ بِٱلْعِبَادِ', words: ['Und', 'Allah', 'ist allsehend', 'bezüglich der', 'Diener'] },
+            { arabic: 'وَهُوَ ٱلْعَلِيُّ ٱلْعَظِيمُ', words: ['Und Er', 'ist', 'der Erhabene', 'der Großartige'] },
+            { arabic: 'إِنَّ ٱللَّهَ بِٱلنَّاسِ لَرَءُوفٌ رَحِيمٌ', words: ['Gewiss', 'Allah', 'ist den Menschen gegenüber', 'wahrlich', 'sehr gnädig', 'barmherzig'] },
+            { arabic: 'وَهُوَ ٱلْعَزِيزُ ٱلْحَكِيمُ', words: ['Und', 'Er ist', 'der Mächtige', 'der Weise'] },
+            { arabic: 'رَبُّ ٱلسَّمَاوَاتِ وَٱلْأَرْضِ', words: ['Herr', 'der Himmel', 'und', 'der Erde'] },
+            { arabic: 'وَهُوَ بِكُلِّ شَيْءٍ عَلِيمٌ', words: ['Und', 'Er ist', 'über', 'jede', 'Sache', 'allwissend'] },
+            { arabic: 'إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِلْعَالَمِينَ', words: ['Gewiss', 'darin', 'sind wahrlich', 'Zeichen', 'für die Welten'] }
         ],
         fillBlank: [
-            { arabic: '\u0625\u0650\u0646\u064e\u0651 \u0627\u0644\u0644\u064e\u0651\u0647\u064e \u00a6 \u0639\u064e\u0644\u0650\u062a\u0645\u064c', hint: 'Gewiss, Allah ist allwissend', options: ['\u0639\u064e\u0632\u0650\u062a\u0632', '\u0639\u064e\u0644\u0650\u062a\u0645\u064c', '\u062e\u064e\u0628\u0650\u062a\u0631'], correct: 1 },
-            { arabic: '\u0647\u064f\u0648\u064e \u0627\u0644\u0652\u062d\u064e\u062a\u064f\u0651 \u00a6', hint: 'Er ist der Lebendige, der Best\u00e4ndige', options: ['\u0627\u0644\u0652\u0642\u064e\u062a\u064f\u0651\u0648\u0645\u064f', '\u0627\u0644\u0652\u0639\u064e\u0632\u0650\u062a\u0632\u064f', '\u0627\u0644\u0652\u0628\u064e\u0635\u0650\u062a\u0631\u064f'], correct: 0 },
-            { arabic: '\u0648\u064e\u0627\u0633\u0652\u062a\u064e\u063a\u0652\u0641\u0650\u0631\u0650 \u00a6', hint: 'Und bitte Allah um Vergebung', options: ['\u0627\u0644\u0644\u064e\u0651\u0647\u064e', '\u0627\u0644\u0631\u0651\u064e\u0628\u064e', '\u0627\u0644\u0646\u064e\u0651\u0627\u0633\u064e'], correct: 0 }
+            { arabic: 'ٱلْحَمْدُ لِلَّهِ رَبِّ \u00a6', hint: 'Das Lob gehört Allah, dem Herrn der Welten', options: ['ٱلنَّاسِ', 'ٱلْعَالَمِينَ', 'ٱلْعِبَادِ'], correct: 1 },
+            { arabic: 'لَا إِلٰهَ إِلَّا هُوَ ٱلْحَيُّ \u00a6', hint: '... der Lebendige, der Beständige', options: ['ٱلْقَيُّومُ', 'ٱلْعَظِيمُ', 'ٱلْبَصِيرُ'], correct: 0 },
+            { arabic: 'إِنَّ ٱللَّهَ عَلَىٰ كُلِّ شَيْءٍ \u00a6', hint: 'Gewiss, Allah ist über jede Sache allmächtig', options: ['عَلِيمٌ', 'حَكِيمٌ', 'قَدِيرٌ'], correct: 2 },
+            { arabic: 'وَهُوَ ٱلسَّمِيعُ \u00a6', hint: 'Und Er ist der Allhörende, der Allwissende', options: ['ٱلْخَبِيرُ', 'ٱلْعَلِيمُ', 'ٱلرَّءُوفُ'], correct: 1 },
+            { arabic: 'وَٱللَّهُ بَصِيرٌ بِ\u00a6', hint: 'Und Allah ist allsehend bezüglich der Diener', options: ['ٱلْعِبَادِ', 'ٱلنَّاسِ', 'ٱلْعَالَمِينَ'], correct: 0 },
+            { arabic: 'وَكَانَ ٱللَّهُ \u00a6 رَحِيمًا', hint: 'Und Allah war sehr verzeihend, barmherzig', options: ['عَلِيمًا', 'غَفُورًا', 'عَظِيمًا'], correct: 1 },
+            { arabic: 'إِنَّ ٱللَّهَ بِٱلنَّاسِ لَ\u00a6 رَحِيمٌ', hint: 'Gewiss, Allah ist den Menschen gegenüber wahrlich sehr gnädig..., erbarmend', options: ['عَزِيزٌ', 'بَصِيرٌ', 'رَءُوفٌ'], correct: 2 },
+            { arabic: 'وَهُوَ ٱلْعَزِيزُ \u00a6', hint: 'Und Er ist der Mächtige, der Weise', options: ['ٱلْحَكِيمُ', 'ٱلْقَدِيرُ', 'ٱلْعَلِيُّ'], correct: 0 },
+            { arabic: 'وَهُوَ بِكُلِّ \u00a6 عَلِيمٌ', hint: 'Und Er ist über jede Sache allwissend', options: ['آيَةٍ', 'شَيْءٍ', 'خَلْقٍ'], correct: 1 },
+            { arabic: 'لَا إِلٰهَ \u00a6 ٱللَّهُ', hint: 'Es gibt keinen Anbetungswürdigen außer Allah', options: ['أَنْ', 'إِلَّا', 'إِنَّ'], correct: 1 },
+            { arabic: 'وَكَانَ ٱللَّهُ عَلِيمًا \u00a6', hint: 'Und Allah ist allwissend, kundig', options: ['قَدِيرًا', 'خَبِيرًا', 'حَيًّا'], correct: 1 },
+            { arabic: 'وَهُوَ ٱلْعَلِيُّ \u00a6', hint: 'Und Er ist der Erhabene, der Großartige', options: ['ٱلْعَظِيمُ', 'ٱلْحَكِيمُ', 'ٱلْقَيُّومُ'], correct: 0 }
         ]
     }
 };
