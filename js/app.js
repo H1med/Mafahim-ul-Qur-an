@@ -946,7 +946,7 @@ function renderPhr3() {
                 html += q.arabic;
             }
             html += '</div>';
-            html += '<div class="phr3-hint">' + q.hint + '</div>';
+            html += '<div class="phr3-hint"><span class="phr3-hint-label">Bedeutung:</span> ' + q.hint + '</div>';
             if (!isCorrect) {
                 html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: <span class="arabic-inline">' + q.options[q.correct] + '</span></div>';
             }
@@ -969,7 +969,7 @@ function renderPhr3() {
         html += q.arabic;
     }
     html += '</div>';
-    html += '<div class="phr3-hint">' + q.hint + '</div>';
+    html += '<div class="phr3-hint"><span class="phr3-hint-label">Bedeutung:</span> ' + q.hint + '</div>';
     html += '<div class="mc-options phr3-options">';
     q.options.forEach(function(opt, oi) {
         var cls = 'mc-opt';
@@ -1120,7 +1120,7 @@ function renderExam() {
                     html += a.q.arabic;
                 }
                 html += '</div>';
-                html += '<div class="phr3-hint">' + a.q.hint + '</div>';
+                html += '<div class="phr3-hint"><span class="phr3-hint-label">Bedeutung:</span> ' + a.q.hint + '</div>';
                 if (!isCorrect) {
                     html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: <span class="arabic-inline">' + a.q.options[a.q.correct] + '</span></div>';
                 }
@@ -1185,7 +1185,7 @@ function renderExam() {
             html += q.arabic;
         }
         html += '</div>';
-        html += '<div class="phr3-hint">' + q.hint + '</div>';
+        html += '<div class="phr3-hint"><span class="phr3-hint-label">Bedeutung:</span> ' + q.hint + '</div>';
         html += '<div class="mc-options phr3-options">';
         q.options.forEach(function(opt, oi) {
             var cls = 'mc-opt';

@@ -748,9 +748,23 @@ body {
     margin: 0 0.2rem;
 }
 .phr3-hint {
-    font-size: 1rem; color: var(--text);
+    font-size: 0.9rem; color: var(--accent-dark);
     font-weight: 500; margin-bottom: 0.75rem;
-    text-align: center;
+    padding: 0.5rem 0.8rem;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    display: flex; align-items: center; gap: 0.4rem;
+}
+.phr3-hint::before {
+    content: '\f0eb';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+.phr3-hint-label {
+    font-weight: 600; color: var(--accent);
 }
 .phr3-options { flex-direction: row !important; flex-wrap: wrap; }
 .phr3-options .mc-opt { flex: 0 0 auto; }
