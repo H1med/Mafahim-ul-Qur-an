@@ -301,7 +301,16 @@ function renderExerciseHub() {
 function startExercise(id) {
     app.ex.active = id;
     clearExTimers();
+    if (id === 'exam') exState = { _timers: [], showAll: false };
     initExState(id);
+    renderLesson();
+}
+
+function startExamAll() {
+    app.ex.active = 'exam';
+    clearExTimers();
+    exState = { _timers: [], showAll: true };
+    initExState('exam');
     renderLesson();
 }
 
@@ -314,6 +323,12 @@ function backToHub() {
 
 function restartExercise() {
     clearExTimers();
+    if (app.ex.active === 'exam') {
+        var keepAll = exState.showAll;
+        exState = { _timers: [], showAll: keepAll };
+    } else {
+        exState = { _timers: [] };
+    }
     initExState(app.ex.active);
     renderLesson();
 }
@@ -458,6 +473,28 @@ function renderMC() {
             if (st.sel[i] === cIdx) correct++;
         });
         html += '<div class="mc-score show">Ergebnis: ' + correct + ' von ' + total + ' richtig</div>';
+        // detailed review
+        st.questions.forEach(function(qq, i) {
+            var askAr = (st.direction === 'ar') || (st.direction === 'both' && i % 2 === 0);
+            var cIdx = askAr ? qq.correctDe : qq.correctAr;
+            var opts = askAr ? qq.optionsDe : qq.optionsAr;
+            var isCorrect = st.sel[i] === cIdx;
+            var askText = askAr ? qq.arabic : qq.german;
+            html += '<div class="review-block ' + (isCorrect ? 'review-correct' : 'review-wrong') + '">';
+            html += '<div class="review-num">Frage ' + (i + 1) + ' <i class="fa-solid ' + (isCorrect ? 'fa-check' : 'fa-xmark') + '"></i></div>';
+            html += '<div class="mc-question-text">' + (askAr ? '<span class="arabic">' + askText + '</span>' : askText) + '</div>';
+            html += '<div class="mc-options">';
+            var labels = ['A','B','C','D'];
+            opts.forEach(function(opt, oi) {
+                var cls = 'mc-opt';
+                if (oi === cIdx) cls += ' correct';
+                else if (st.sel[i] === oi) cls += ' incorrect';
+                var optHtml = askAr ? opt : '<span class="arabic-inline">' + opt + '</span>';
+                html += '<button class="' + cls + '" disabled>' + labels[oi] + ') ' + optHtml + '</button>';
+            });
+            html += '</div>';
+            html += '</div>';
+        });
         html += '<button class="check-btn" style="margin-top:0.5rem" onclick="restartExercise()"><i class="fa-solid fa-rotate-right"></i> Neue Runde</button>';
     }
     html += '</div>';
@@ -536,7 +573,7 @@ function setupMatchRound() {
             pairs = st.allPairs.slice(0, Math.min(10, st.allPairs.length));
             st.timeLeft = 12;
         } else {
-            pairs = st.allPairs.slice();
+            pairs = st.allPairs.slice(0, Math.min(10, st.allPairs.length));
             st.timeLeft = pairs.length * 1;
         }
     } else {
@@ -757,8 +794,9 @@ function phr1Check() {
 //   Phrase wird angezeigt, Wörter in richtiger Reihenfolge anklicken
 // ============================================================
 function initPhr2() {
-    exState.questions = LESSONS[app.currentLesson].exercises.phraseOrder.slice();
-    shuffleArr(exState.questions);
+    var all = LESSONS[app.currentLesson].exercises.phraseOrder.slice();
+    shuffleArr(all);
+    exState.questions = all.slice(0, Math.min(10, all.length));
     exState.qi = 0;
     exState.picked = [];
     exState.bank = [];
@@ -780,6 +818,27 @@ function renderPhr2() {
     if (st.checked) {
         var correct = st.results.filter(function(r){ return r; }).length;
         html += '<div class="mc-score show">' + correct + ' von ' + total + ' richtig</div>';
+        // detailed review
+        st.questions.forEach(function(q, qi) {
+            var isCorrect = st.results[qi];
+            var userPicked = st.answers[qi] || [];
+            html += '<div class="review-block ' + (isCorrect ? 'review-correct' : 'review-wrong') + '">';
+            html += '<div class="review-num">Frage ' + (qi + 1) + ' <i class="fa-solid ' + (isCorrect ? 'fa-check' : 'fa-xmark') + '"></i></div>';
+            html += '<div class="trans-verse-arabic">' + q.arabic + '</div>';
+            html += '<div class="phr2-picked static">';
+            userPicked.forEach(function(w) {
+                html += '<span class="phr2-word">' + w + '</span>';
+            });
+            html += '</div>';
+            if (!isCorrect) {
+                html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: ';
+                q.words.forEach(function(w, wi) {
+                    html += '<span class="phr2-word correct-word">' + w + '</span>';
+                });
+                html += '</div>';
+            }
+            html += '</div>';
+        });
         html += '<button class="check-btn" style="margin-top:0.5rem" onclick="restartExercise()"><i class="fa-solid fa-rotate-right"></i> Neue Runde</button>';
         html += '</div>';
         return html;
@@ -830,9 +889,11 @@ function phr2Reset() {
 function phr2Next() {
     var st = exState;
     var q = st.questions[st.qi];
-    var correct = st.picked.every(function(w, i){ return w === q.words[i]; });
+    var correct = st.picked.length === q.words.length && st.picked.every(function(w, i){ return w === q.words[i]; });
     st.results = st.results || [];
     st.results.push(correct);
+    st.answers = st.answers || [];
+    st.answers.push(st.picked.slice());
     st.qi++;
     if (st.qi >= st.questions.length) {
         st.checked = true;
@@ -848,8 +909,9 @@ function phr2Next() {
 // EXERCISE 5: ÜBERSETZUNG PHRASEN 3 (Lücken füllen)
 // ============================================================
 function initPhr3() {
-    exState.questions = LESSONS[app.currentLesson].exercises.fillBlank.slice();
-    shuffleArr(exState.questions);
+    var all = LESSONS[app.currentLesson].exercises.fillBlank.slice();
+    shuffleArr(all);
+    exState.questions = all.slice(0, Math.min(10, all.length));
     exState.qi = 0;
     exState.sel = null;
     exState.checked = false;
@@ -863,6 +925,33 @@ function renderPhr3() {
     if (st.checked) {
         var correct = st.results.filter(function(r){ return r; }).length;
         html += '<div class="mc-score show">' + correct + ' von ' + total + ' richtig</div>';
+        // detailed review
+        st.questions.forEach(function(q, qi) {
+            var isCorrect = st.results[qi];
+            var arabicParts = q.arabic.split('\u00a6');
+            html += '<div class="review-block ' + (isCorrect ? 'review-correct' : 'review-wrong') + '">';
+            html += '<div class="review-num">Frage ' + (qi + 1) + ' <i class="fa-solid ' + (isCorrect ? 'fa-check' : 'fa-xmark') + '"></i></div>';
+            html += '<div class="trans-verse-arabic phr3-verse">';
+            if (arabicParts.length > 1) {
+                html += arabicParts[0];
+                var chosen = st.answers[qi];
+                var correctWord = q.options[q.correct];
+                if (isCorrect) {
+                    html += '<span class="phr3-blank correct-blank"><span class="arabic-inline">' + chosen + '</span></span>';
+                } else {
+                    html += '<span class="phr3-blank wrong-blank"><span class="arabic-inline">' + (chosen || '—') + '</span></span>';
+                }
+                html += arabicParts[1];
+            } else {
+                html += q.arabic;
+            }
+            html += '</div>';
+            html += '<div class="phr3-hint">' + q.hint + '</div>';
+            if (!isCorrect) {
+                html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: <span class="arabic-inline">' + q.options[q.correct] + '</span></div>';
+            }
+            html += '</div>';
+        });
         html += '<button class="check-btn" style="margin-top:0.5rem" onclick="restartExercise()"><i class="fa-solid fa-rotate-right"></i> Neue Runde</button>';
         html += '</div>';
         return html;
@@ -903,6 +992,8 @@ function phr3Next() {
     var q = st.questions[st.qi];
     var correct = st.sel === q.options[q.correct];
     st.results.push(correct);
+    st.answers = st.answers || [];
+    st.answers.push(st.sel);
     st.qi++;
     st.sel = null;
     if (st.qi >= st.questions.length) {
@@ -918,23 +1009,28 @@ function phr3Next() {
 // ============================================================
 function initExam() {
     var lesson = LESSONS[app.currentLesson];
-    // Build a mixed quiz: some MC, some matching, some phr1, some phr2, some phr3
+    exState.showAll = exState.showAll || false;
+    // Build a mixed quiz: 20 questions total, mixed across all exercise types
+    var targetCount = exState.showAll ? 999 : 20;
     var parts = [];
-    // 5 MC questions from vocab
-    var mcQs = buildMCQuestions(lesson, 5);
-    mcQs.forEach(function(q) { parts.push({ type: 'mc', q: q }); });
-    // 3 phrase translation
-    var phr1 = lesson.exercises.translatePhrases.slice();
-    shuffleArr(phr1);
-    phr1.slice(0, 3).forEach(function(q) { parts.push({ type: 'phr1', q: q }); });
-    // 3 fill blank
-    var fb = lesson.exercises.fillBlank.slice();
-    shuffleArr(fb);
-    fb.slice(0, 3).forEach(function(q) { parts.push({ type: 'phr3', q: q }); });
-    // 3 phrase order
-    var po = lesson.exercises.phraseOrder.slice();
-    shuffleArr(po);
-    po.slice(0, 3).forEach(function(q) { parts.push({ type: 'phr2', q: q }); });
+    // distribute evenly across types
+    var mcQs = buildMCQuestions(lesson, 99);
+    var phr1 = lesson.exercises.translatePhrases.slice(); shuffleArr(phr1);
+    var fb = lesson.exercises.fillBlank.slice(); shuffleArr(fb);
+    var po = lesson.exercises.phraseOrder.slice(); shuffleArr(po);
+    var mcIdx = 0, phr1Idx = 0, fbIdx = 0, poIdx = 0;
+    // round-robin fill until targetCount reached or all pools exhausted
+    while (parts.length < targetCount) {
+        var added = false;
+        if (mcIdx < mcQs.length) { parts.push({ type: 'mc', q: mcQs[mcIdx++] }); added = true; }
+        if (parts.length >= targetCount) break;
+        if (phr1Idx < phr1.length) { parts.push({ type: 'phr1', q: phr1[phr1Idx++] }); added = true; }
+        if (parts.length >= targetCount) break;
+        if (poIdx < po.length) { parts.push({ type: 'phr2', q: po[poIdx++] }); added = true; }
+        if (parts.length >= targetCount) break;
+        if (fbIdx < fb.length) { parts.push({ type: 'phr3', q: fb[fbIdx++] }); added = true; }
+        if (!added) break; // all pools exhausted
+    }
     shuffleArr(parts);
     exState.parts = parts;
     exState.pi = 0;
@@ -968,7 +1064,74 @@ function renderExam() {
         var passed = correct >= total * (1 - MAX_ERROR_PCT);
         html += '<p class="' + (passed ? 'pass' : 'fail') + '">' + (passed ? 'Bestanden!' : 'Nicht bestanden.') + '</p>';
         if (passed) app.ex.done['exam'] = true;
+        html += '</div>';
+        // detailed review
+        st.answers.forEach(function(a, i) {
+            var isCorrect = st.results[i];
+            html += '<div class="review-block ' + (isCorrect ? 'review-correct' : 'review-wrong') + '">';
+            html += '<div class="review-num">Frage ' + (i + 1) + ' <span class="exam-type-badge">' + typeLabel(a.type) + '</span> <i class="fa-solid ' + (isCorrect ? 'fa-check' : 'fa-xmark') + '"></i></div>';
+            if (a.type === 'mc') {
+                html += '<div class="mc-question-text"><span class="arabic">' + a.q.arabic + '</span></div>';
+                html += '<div class="mc-options">';
+                var labels = ['A','B','C','D'];
+                a.q.optionsDe.forEach(function(opt, oi) {
+                    var cls = 'mc-opt';
+                    if (oi === a.q.correctDe) cls += ' correct';
+                    else if (a.sel === oi) cls += ' incorrect';
+                    html += '<button class="' + cls + '" disabled>' + labels[oi] + ') ' + opt + '</button>';
+                });
+                html += '</div>';
+            } else if (a.type === 'phr1') {
+                html += '<div class="trans-verse-arabic">' + a.q.arabic + '</div>';
+                html += '<div class="trans-options">';
+                a.q.options.forEach(function(opt, oi) {
+                    var cls = 'trans-opt';
+                    if (oi === a.q.correct) cls += ' correct';
+                    else if (a.sel === oi) cls += ' incorrect';
+                    html += '<button class="' + cls + '" disabled>' + opt + '</button>';
+                });
+                html += '</div>';
+            } else if (a.type === 'phr2') {
+                html += '<div class="trans-verse-arabic">' + a.q.arabic + '</div>';
+                html += '<div class="phr2-picked static">';
+                (a.picked || []).forEach(function(w) {
+                    html += '<span class="phr2-word">' + w + '</span>';
+                });
+                html += '</div>';
+                if (!isCorrect) {
+                    html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: ';
+                    a.q.words.forEach(function(w) {
+                        html += '<span class="phr2-word correct-word">' + w + '</span>';
+                    });
+                    html += '</div>';
+                }
+            } else if (a.type === 'phr3') {
+                var arabicParts = a.q.arabic.split('\u00a6');
+                html += '<div class="trans-verse-arabic phr3-verse">';
+                if (arabicParts.length > 1) {
+                    html += arabicParts[0];
+                    if (isCorrect) {
+                        html += '<span class="phr3-blank correct-blank"><span class="arabic-inline">' + a.sel + '</span></span>';
+                    } else {
+                        html += '<span class="phr3-blank wrong-blank"><span class="arabic-inline">' + (a.sel || '—') + '</span></span>';
+                    }
+                    html += arabicParts[1];
+                } else {
+                    html += a.q.arabic;
+                }
+                html += '</div>';
+                html += '<div class="phr3-hint">' + a.q.hint + '</div>';
+                if (!isCorrect) {
+                    html += '<div class="review-correct-answer"><i class="fa-solid fa-circle-check"></i> Richtig: <span class="arabic-inline">' + a.q.options[a.q.correct] + '</span></div>';
+                }
+            }
+            html += '</div>';
+        });
+        html += '<div class="exam-actions">';
         html += '<button class="check-btn" style="margin-top:0.5rem" onclick="restartExercise()"><i class="fa-solid fa-rotate-right"></i> Neue Prüfung</button>';
+        if (!st.showAll) {
+            html += '<button class="nav-btn" style="margin-top:0.5rem" onclick="startExamAll()"><i class="fa-solid fa-list"></i> Alle Fragen anzeigen</button>';
+        }
         html += '</div>';
         html += '</div>';
         return html;
@@ -1058,14 +1221,19 @@ function examNext() {
     var st = exState;
     var part = st.parts[st.pi];
     var correct = false;
+    st.answers = st.answers || [];
     if (part.type === 'mc') {
         correct = st.sel === part.q.correctDe;
+        st.answers.push({ type: 'mc', sel: st.sel, q: part.q });
     } else if (part.type === 'phr1') {
         correct = st.sel === part.q.correct;
+        st.answers.push({ type: 'phr1', sel: st.sel, q: part.q });
     } else if (part.type === 'phr2') {
-        correct = st.picked.every(function(w, i){ return w === part.q.words[i]; });
+        correct = st.picked.length === part.q.words.length && st.picked.every(function(w, i){ return w === part.q.words[i]; });
+        st.answers.push({ type: 'phr2', picked: st.picked.slice(), q: part.q });
     } else if (part.type === 'phr3') {
         correct = st.sel === part.q.options[part.q.correct];
+        st.answers.push({ type: 'phr3', sel: st.sel, q: part.q });
     }
     st.results.push(correct);
     st.pi++;

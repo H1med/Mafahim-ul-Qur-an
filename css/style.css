@@ -748,8 +748,8 @@ body {
     margin: 0 0.2rem;
 }
 .phr3-hint {
-    font-size: 0.82rem; color: var(--text-secondary);
-    font-style: italic; margin-bottom: 0.75rem;
+    font-size: 1rem; color: var(--text);
+    font-weight: 500; margin-bottom: 0.75rem;
     text-align: center;
 }
 .phr3-options { flex-direction: row !important; flex-wrap: wrap; }
@@ -769,9 +769,40 @@ body {
 .exam-result h3 { margin-bottom: 0.5rem; }
 .exam-result .pass { color: var(--success); font-weight: 700; }
 .exam-result .fail { color: var(--error); font-weight: 700; }
+.exam-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
 
 /* arabic inline text - größer */
 .arabic-inline {
     font-family: 'Amiri', 'Noto Naskh Arabic', serif;
     direction: rtl; display: inline; font-size: 1.5em;
 }
+
+/* ====================== REVIEW (Auswertung) ====================== */
+.review-block {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--bg);
+}
+.review-block.review-correct { border-color: var(--success-border); background: var(--success-bg); }
+.review-block.review-wrong { border-color: var(--error-border); background: var(--error-bg); }
+.review-num {
+    font-size: 0.82rem; font-weight: 700;
+    margin-bottom: 0.4rem;
+    display: flex; align-items: center; gap: 0.4rem;
+}
+.review-correct .review-num { color: var(--success); }
+.review-wrong .review-num { color: var(--error); }
+.review-correct-answer {
+    margin-top: 0.4rem;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--success);
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem;
+}
+.review-correct-answer .arabic-inline { font-size: 2em; }
+.phr2-picked.static { background: var(--surface); border-style: solid; cursor: default; }
+.phr2-picked.static .phr2-word { cursor: default; }
+.phr2-word.correct-word { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.phr3-blank.correct-blank { border-bottom-color: var(--success); color: var(--success); }
+.phr3-blank.wrong-blank { border-bottom-color: var(--error); color: var(--error); }
